@@ -26,8 +26,11 @@ jobs:
     - name: Install dependencies
       run: go mod tidy
 
-    - name: Build
+    - name: Build Resolver
       run: go build -o build/app ./resolver/main.go
+    
+    - name: Build Root Server
+      run: go build -o build/app ./root-server/main.go
 
     - name: Run tests
       run: go test -v ./...
