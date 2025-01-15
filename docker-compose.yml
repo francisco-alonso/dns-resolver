@@ -1,14 +1,29 @@
-version: '3.9'
+version: "3.9"
 services:
-  dns-resolver:
+  resolver:
     build:
       context: .
       dockerfile: resolver/Dockerfile
     ports:
       - "53:53/udp"
+
   root-server:
     build:
       context: .
       dockerfile: root-server/Dockerfile
     ports:
       - "5301:53/udp"
+
+  tld-server:
+    build:
+      context: .
+      dockerfile: tld-server/Dockerfile
+    ports:
+      - "5302:53/udp"
+
+  auth-server:
+    build:
+      context: .
+      dockerfile: auth-server/Dockerfile
+    ports:
+      - "5303:53/udp"

@@ -31,6 +31,12 @@ jobs:
     
     - name: Build Root Server
       run: go build -o build/app ./root-server/main.go
-
+    
+    - name: Build TLD Server
+      run: go build -o build/app ./tld-server/main.go
+    
+    - name: Build Auth Server
+      run: go build -o build/app ./auth-server/main.go
+      
     - name: Run tests
       run: go test -v ./...
