@@ -10,17 +10,37 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Step 1: Checkout code
       - name: Checkout code
         uses: actions/checkout@v3
 
+      # Step 2: Log in to Docker Hub
       - name: Login to DockerHub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build Docker image
-        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/dns-resolver:latest .
+      # Step 3: Build and push resolver image
+      - name: Build and push resolver image
+        run: |
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/dns-resolver:latest -f resolver/Dockerfile .
+          docker push ${{ secrets.DOCKER_USERNAME }}/dns-resolver:latest
 
-      - name: Push Docker image
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/dns-resolver:latest
+      # Step 4: Build and push root-server image
+      - name: Build and push root-server image
+        run: |
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/root-server:latest -f root-server/Dockerfile .
+          docker push ${{ secrets.DOCKER_USERNAME }}/root-server:latest
+
+      # Step 5: Build and push tld-server image
+      - name: Build and push tld-server image
+        run: |
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/tld-server:latest -f tld-server/Dockerfile .
+          docker push ${{ secrets.DOCKER_USERNAME }}/tld-server:latest
+
+      # Step 6: Build and push auth-server image
+      - name: Build and push auth-server image
+        run: |
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/auth-server:latest -f auth-server/Dockerfile .
+          docker push ${{ secrets.DOCKER_USERNAME }}/auth-server:latest
